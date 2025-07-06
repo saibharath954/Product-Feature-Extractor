@@ -15,19 +15,17 @@ def load_data(file_path: str) -> List[Dict[str, Any]]:
     try:
         df = pd.read_csv(file_path)
         
-        # Basic validation
         if 'review' not in df.columns:
             raise ValueError("Input file must contain 'review' column")
             
-        # Convert to list of dicts with standardized keys
         data = []
         for _, row in df.iterrows():
             record = {
                 'id': str(row.get('id', len(data))),
                 'review': str(row['review']).strip(),
-                'rating': row.get('rating', None)
+                'rating': float(row['rating']) if 'rating' in df.columns and pd.notna(row['rating']) else None
             }
-            if record['review']:  # Only include non-empty reviews
+            if record['review']:
                 data.append(record)
                 
         return data
@@ -49,34 +47,29 @@ def print_summary(report: Dict[str, Any]):
     """Print a user-friendly summary"""
     logger.info("\n=== ANALYSIS SUMMARY ===\n")
     
-    # Basic stats
     logger.info(f"Total Reviews Processed: {report['summary']['total_reviews']}")
     logger.info(f"Reviews with Features Identified: {report['summary']['reviews_with_features']}")
     logger.info(f"Total Features Extracted: {report['summary']['total_features_identified']}\n")
     
-    # Top features
     if report['top_features']:
-        logger.info("=== MOST DISCUSSED FEATURES ===")
+        logger.info("=== TOP 5 FEATURES ===")
         for i, feat in enumerate(report['top_features'][:5], 1):
             logger.info(f"{i}. {feat['feature']} (mentioned {feat['count']} times)")
     
-    # Strengths
     if report['strengths']:
-        logger.info("\n=== PRODUCT STRENGTHS ===")
+        logger.info("\n=== TOP 3 STRENGTHS ===")
         for i, strength in enumerate(report['strengths'][:3], 1):
             logger.info(f"{i}. {strength['feature']}")
             logger.info(f"   Positive sentiment: {strength['positive_pct']:.0f}% of mentions")
     
-    # Improvement opportunities
     if report['improvement_opportunities']:
-        logger.info("\n=== IMPROVEMENT OPPORTUNITIES ===")
+        logger.info("\n=== TOP 3 IMPROVEMENT AREAS ===")
         for i, opp in enumerate(report['improvement_opportunities'][:3], 1):
             logger.info(f"{i}. {opp['feature']}")
             logger.info(f"   Negative sentiment: {opp['negative_pct']:.0f}% of mentions")
     
-    # Rating correlation
-    if 'rating_analysis' in report and report['rating_analysis']:
-        logger.info("\n=== HIGHEST RATED FEATURES ===")
+    if report['rating_analysis']:
+        logger.info("\n=== TOP 3 HIGHEST RATED FEATURES ===")
         for i, feat in enumerate(report['rating_analysis'][:3], 1):
             logger.info(f"{i}. {feat['feature']} (avg rating: {feat['avg_rating']:.1f})")
 
@@ -90,23 +83,19 @@ def main():
         logger.info("\n=== PRODUCT FEATURE ANALYZER ===")
         logger.info(f"Started at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         
-        # Step 1: Load data
         logger.info("[1/3] Loading and preprocessing data...")
         data = load_data(args.input_file)
         logger.info(f"Loaded {len(data)} valid reviews\n")
         
-        # Step 2: Process reviews
         logger.info("[2/3] Extracting features and analyzing sentiments...")
         extractor = FeatureExtractor()
         results = extractor.batch_process(data)
         logger.info(f"Processing complete. Analyzed {len(results)} reviews.\n")
         
-        # Step 3: Analyze results
         logger.info("[3/3] Generating insights...")
         analyzer = AnalysisResults(results)
         report = analyzer.generate_report()
         
-        # Print and save results
         print_summary(report)
         save_results({
             'metadata': {

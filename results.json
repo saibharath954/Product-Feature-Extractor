@@ -1,105 +1,268 @@
 {
   "metadata": {
-    "timestamp": "2025-07-06T23:13:26.399700",
+    "timestamp": "2025-07-07T00:20:30.305478",
     "input_file": "product_reviews.csv",
-    "records_processed": 5
+    "records_processed": 10
   },
   "results": [
     {
       "review_id": "1",
-      "review_text": "The camera quality is excellent with great low-light performance, but battery life drains too quickly.",
-      "rating": 4,
+      "review_text": "The camera quality is outstanding, especially in low-light conditions. The 108MP sensor captures incredible detail. However, the battery life could be better - it barely lasts a full day with moderate usage.",
+      "rating": 4.0,
       "features": [
-        "camera"
+        "battery",
+        "a full day",
+        "camera",
+        "moderate usage",
+        "the 108mp sensor",
+        "incredible detail",
+        "low-light conditions"
       ],
       "sentiments": {
-        "camera": "positive"
+        "battery": "neutral",
+        "a full day": "neutral",
+        "camera": "neutral",
+        "moderate usage": "neutral",
+        "the 108mp sensor": "neutral",
+        "incredible detail": "neutral",
+        "low-light conditions": "neutral"
       }
     },
     {
       "review_id": "2",
-      "review_text": "Love the vibrant display colors, though the phone gets warm during extended gaming sessions.",
-      "rating": 3,
+      "review_text": "I'm extremely impressed with the display quality. The 120Hz AMOLED screen makes everything look smooth and vibrant. The fingerprint scanner is also lightning fast and works perfectly every time.",
+      "rating": 5.0,
       "features": [
-        "five stars"
+        "fingerprint",
+        "screen",
+        "display"
       ],
       "sentiments": {
-        "five stars": "positive"
+        "fingerprint": "positive",
+        "screen": "positive",
+        "display": "neutral"
       }
     },
     {
       "review_id": "3",
-      "review_text": "Speaker sound is tinny and lacks bass, but the build quality feels premium.",
-      "rating": 2,
+      "review_text": "The phone's build quality feels premium with its aluminum frame and Gorilla Glass protection. But the device tends to overheat during gaming sessions, which affects performance.",
+      "rating": 3.0,
       "features": [
-        "audio"
+        "gaming sessions",
+        "the device",
+        "build",
+        "gorilla glass protection",
+        "performance",
+        "memory"
       ],
       "sentiments": {
-        "audio": "negative"
+        "gaming sessions": "negative",
+        "the device": "negative",
+        "build": "neutral",
+        "gorilla glass protection": "neutral",
+        "performance": "neutral",
+        "memory": "neutral"
       }
     },
     {
       "review_id": "4",
-      "review_text": "Software is smooth with no lag, and facial recognition works flawlessly even in dark conditions.",
-      "rating": 5,
+      "review_text": "The audio quality from the stereo speakers is amazing - rich bass and clear highs. However, the facial recognition system fails too often in low light conditions.",
+      "rating": 3.0,
       "features": [
-        "smooth"
+        "speaker",
+        "audio",
+        "low light conditions"
       ],
       "sentiments": {
-        "smooth": "negative"
+        "speaker": "positive",
+        "audio": "neutral",
+        "low light conditions": "neutral"
       }
     },
     {
       "review_id": "5",
-      "review_text": "Screen scratches too easily - should include better protective glass. Camera is decent in daylight.",
-      "rating": 3,
+      "review_text": "Battery life is exceptional! I easily get 2 full days of usage on a single charge. The 65W fast charging is incredibly quick too. My only complaint is the mediocre call quality in crowded areas.",
+      "rating": 4.0,
       "features": [
+        "crowded areas",
+        "a single charge",
+        "my only complaint",
+        "battery",
+        "2 full days"
+      ],
+      "sentiments": {
+        "crowded areas": "neutral",
+        "a single charge": "positive",
+        "my only complaint": "neutral",
+        "battery": "neutral",
+        "2 full days": "neutral"
+      }
+    },
+    {
+      "review_id": "6",
+      "review_text": "The software experience is smooth with no lag or stuttering. The latest Android version with regular updates is a big plus. The camera's portrait mode could use some improvement though.",
+      "rating": 4.0,
+      "features": [
+        "software",
+        "a big plus",
+        "some improvement",
+        "performance",
+        "regular updates",
         "camera"
       ],
       "sentiments": {
+        "software": "positive",
+        "a big plus": "neutral",
+        "some improvement": "neutral",
+        "performance": "neutral",
+        "regular updates": "neutral",
         "camera": "neutral"
+      }
+    },
+    {
+      "review_id": "7",
+      "review_text": "This phone's performance is top-notch thanks to the latest Snapdragon processor. Multitasking is a breeze. The only downside is the slippery back which makes it hard to hold without a case.",
+      "rating": 4.0,
+      "features": [
+        "the slippery",
+        "a case",
+        "the only downside",
+        "processor",
+        "top-notch thanks",
+        "a breeze",
+        "performance"
+      ],
+      "sentiments": {
+        "the slippery": "neutral",
+        "a case": "neutral",
+        "the only downside": "neutral",
+        "processor": "neutral",
+        "top-notch thanks": "neutral",
+        "a breeze": "neutral",
+        "performance": "neutral"
+      }
+    },
+    {
+      "review_id": "8",
+      "review_text": "The 5G connectivity works flawlessly with super fast download speeds. The screen is large and bright, perfect for media consumption. The vibration motor feels weak and unsatisfying though.",
+      "rating": 4.0,
+      "features": [
+        "media consumption",
+        "the vibration motor",
+        "screen",
+        "the 5g connectivity"
+      ],
+      "sentiments": {
+        "media consumption": "positive",
+        "the vibration motor": "neutral",
+        "screen": "positive",
+        "the 5g connectivity": "neutral"
+      }
+    },
+    {
+      "review_id": "9",
+      "review_text": "I love the compact size of this phone - it fits perfectly in one hand. The camera's zoom capabilities are impressive. Unfortunately, the storage is not expandable which limits my usage.",
+      "rating": 3.0,
+      "features": [
+        "one hand",
+        "my usage",
+        "storage",
+        "camera",
+        "the compact size",
+        "this phone"
+      ],
+      "sentiments": {
+        "one hand": "positive",
+        "my usage": "neutral",
+        "storage": "neutral",
+        "camera": "positive",
+        "the compact size": "positive",
+        "this phone": "positive"
+      }
+    },
+    {
+      "review_id": "10",
+      "review_text": "The phone's design is sleek and modern with thin bezels. The in-display fingerprint sensor is accurate but a bit slow. The included charger is surprisingly powerful and charges the device quickly.",
+      "rating": 4.0,
+      "features": [
+        "the included charger",
+        "display",
+        "the device",
+        "design",
+        "thin bezels"
+      ],
+      "sentiments": {
+        "the included charger": "negative",
+        "display": "neutral",
+        "the device": "neutral",
+        "design": "neutral",
+        "thin bezels": "neutral"
       }
     }
   ],
   "analysis": {
     "summary": {
-      "total_reviews": 5,
-      "reviews_with_features": 5,
-      "total_features_identified": 5
+      "total_reviews": 10,
+      "reviews_with_features": 10,
+      "total_features_identified": 52
     },
     "top_features": [
       {
+        "feature": "performance",
+        "count": 3
+      },
+      {
         "feature": "camera",
+        "count": 3
+      },
+      {
+        "feature": "battery",
         "count": 2
       },
       {
-        "feature": "five stars",
-        "count": 1
+        "feature": "screen",
+        "count": 2
       },
       {
-        "feature": "audio",
-        "count": 1
-      },
-      {
-        "feature": "smooth",
-        "count": 1
+        "feature": "display",
+        "count": 2
       }
     ],
     "feature_sentiments": [
       {
-        "feature": "camera",
-        "total": 2,
-        "positive": 1,
+        "feature": "performance",
+        "total": 3,
+        "positive": 0,
         "negative": 0,
-        "neutral": 1,
-        "positive_pct": 50.0,
+        "neutral": 3,
+        "positive_pct": 0.0,
         "negative_pct": 0.0,
-        "neutral_pct": 50.0
+        "neutral_pct": 100.0
       },
       {
-        "feature": "five stars",
-        "total": 1,
+        "feature": "camera",
+        "total": 3,
         "positive": 1,
+        "negative": 0,
+        "neutral": 2,
+        "positive_pct": 33.3,
+        "negative_pct": 0.0,
+        "neutral_pct": 66.7
+      },
+      {
+        "feature": "battery",
+        "total": 2,
+        "positive": 0,
+        "negative": 0,
+        "neutral": 2,
+        "positive_pct": 0.0,
+        "negative_pct": 0.0,
+        "neutral_pct": 100.0
+      },
+      {
+        "feature": "screen",
+        "total": 2,
+        "positive": 2,
         "negative": 0,
         "neutral": 0,
         "positive_pct": 100.0,
@@ -107,37 +270,70 @@
         "neutral_pct": 0.0
       },
       {
-        "feature": "audio",
-        "total": 1,
+        "feature": "display",
+        "total": 2,
         "positive": 0,
-        "negative": 1,
-        "neutral": 0,
+        "negative": 0,
+        "neutral": 2,
         "positive_pct": 0.0,
-        "negative_pct": 100.0,
-        "neutral_pct": 0.0
-      },
+        "negative_pct": 0.0,
+        "neutral_pct": 100.0
+      }
+    ],
+    "improvement_opportunities": [
       {
-        "feature": "smooth",
-        "total": 1,
+        "feature": "the device",
+        "total": 2,
         "positive": 0,
         "negative": 1,
-        "neutral": 0,
+        "neutral": 1,
         "positive_pct": 0.0,
-        "negative_pct": 100.0,
+        "negative_pct": 50.0,
+        "neutral_pct": 50.0
+      }
+    ],
+    "strengths": [
+      {
+        "feature": "screen",
+        "total": 2,
+        "positive": 2,
+        "negative": 0,
+        "neutral": 0,
+        "positive_pct": 100.0,
+        "negative_pct": 0.0,
         "neutral_pct": 0.0
       }
     ],
-    "improvement_opportunities": [],
-    "strengths": [
+    "rating_analysis": [
+      {
+        "feature": "screen",
+        "avg_rating": 4.5,
+        "rating_count": 2
+      },
+      {
+        "feature": "display",
+        "avg_rating": 4.5,
+        "rating_count": 2
+      },
+      {
+        "feature": "battery",
+        "avg_rating": 4.0,
+        "rating_count": 2
+      },
+      {
+        "feature": "performance",
+        "avg_rating": 3.67,
+        "rating_count": 3
+      },
       {
         "feature": "camera",
-        "total": 2,
-        "positive": 1,
-        "negative": 0,
-        "neutral": 1,
-        "positive_pct": 50.0,
-        "negative_pct": 0.0,
-        "neutral_pct": 50.0
+        "avg_rating": 3.67,
+        "rating_count": 3
+      },
+      {
+        "feature": "the device",
+        "avg_rating": 3.5,
+        "rating_count": 2
       }
     ]
   }
