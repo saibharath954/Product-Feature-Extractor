@@ -1,0 +1,144 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-06T23:13:26.399700",
+    "input_file": "product_reviews.csv",
+    "records_processed": 5
+  },
+  "results": [
+    {
+      "review_id": "1",
+      "review_text": "The camera quality is excellent with great low-light performance, but battery life drains too quickly.",
+      "rating": 4,
+      "features": [
+        "camera"
+      ],
+      "sentiments": {
+        "camera": "positive"
+      }
+    },
+    {
+      "review_id": "2",
+      "review_text": "Love the vibrant display colors, though the phone gets warm during extended gaming sessions.",
+      "rating": 3,
+      "features": [
+        "five stars"
+      ],
+      "sentiments": {
+        "five stars": "positive"
+      }
+    },
+    {
+      "review_id": "3",
+      "review_text": "Speaker sound is tinny and lacks bass, but the build quality feels premium.",
+      "rating": 2,
+      "features": [
+        "audio"
+      ],
+      "sentiments": {
+        "audio": "negative"
+      }
+    },
+    {
+      "review_id": "4",
+      "review_text": "Software is smooth with no lag, and facial recognition works flawlessly even in dark conditions.",
+      "rating": 5,
+      "features": [
+        "smooth"
+      ],
+      "sentiments": {
+        "smooth": "negative"
+      }
+    },
+    {
+      "review_id": "5",
+      "review_text": "Screen scratches too easily - should include better protective glass. Camera is decent in daylight.",
+      "rating": 3,
+      "features": [
+        "camera"
+      ],
+      "sentiments": {
+        "camera": "neutral"
+      }
+    }
+  ],
+  "analysis": {
+    "summary": {
+      "total_reviews": 5,
+      "reviews_with_features": 5,
+      "total_features_identified": 5
+    },
+    "top_features": [
+      {
+        "feature": "camera",
+        "count": 2
+      },
+      {
+        "feature": "five stars",
+        "count": 1
+      },
+      {
+        "feature": "audio",
+        "count": 1
+      },
+      {
+        "feature": "smooth",
+        "count": 1
+      }
+    ],
+    "feature_sentiments": [
+      {
+        "feature": "camera",
+        "total": 2,
+        "positive": 1,
+        "negative": 0,
+        "neutral": 1,
+        "positive_pct": 50.0,
+        "negative_pct": 0.0,
+        "neutral_pct": 50.0
+      },
+      {
+        "feature": "five stars",
+        "total": 1,
+        "positive": 1,
+        "negative": 0,
+        "neutral": 0,
+        "positive_pct": 100.0,
+        "negative_pct": 0.0,
+        "neutral_pct": 0.0
+      },
+      {
+        "feature": "audio",
+        "total": 1,
+        "positive": 0,
+        "negative": 1,
+        "neutral": 0,
+        "positive_pct": 0.0,
+        "negative_pct": 100.0,
+        "neutral_pct": 0.0
+      },
+      {
+        "feature": "smooth",
+        "total": 1,
+        "positive": 0,
+        "negative": 1,
+        "neutral": 0,
+        "positive_pct": 0.0,
+        "negative_pct": 100.0,
+        "neutral_pct": 0.0
+      }
+    ],
+    "improvement_opportunities": [],
+    "strengths": [
+      {
+        "feature": "camera",
+        "total": 2,
+        "positive": 1,
+        "negative": 0,
+        "neutral": 1,
+        "positive_pct": 50.0,
+        "negative_pct": 0.0,
+        "neutral_pct": 50.0
+      }
+    ]
+  }
+}
