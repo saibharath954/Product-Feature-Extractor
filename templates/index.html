@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Feature Analyzer</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .sentiment-positive { background-color: #d1fae5; color: #065f46; }
+        .sentiment-negative { background-color: #fee2e2; color: #b91c1c; }
+        .sentiment-neutral { background-color: #e0e7ff; color: #4338ca; }
+        .feature-chip { transition: all 0.2s ease; }
+        .feature-chip:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Product Feature Analyzer</h1>
+            <p class="text-gray-600">Extract features and analyze sentiments from product reviews</p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <div class="flex flex-col md:flex-row gap-4">
+                <!-- Text Input -->
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Enter a product review</label>
+                    <textarea id="reviewInput" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Example: The camera quality is excellent but battery life could be better..."></textarea>
+                    <button id="analyzeBtn" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                        <i class="fas fa-search mr-2"></i> Analyze Review
+                    </button>
+                </div>
+                
+                <!-- Or Divider -->
+                <div class="flex items-center justify-center my-4 md:my-0 md:mx-4">
+                    <div class="h-px bg-gray-200 w-full md:w-px md:h-16"></div>
+                    <span class="px-4 text-gray-400 text-sm font-medium bg-white md:-mx-4">OR</span>
+                </div>
+                
+                <!-- File Upload -->
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload CSV file</label>
+                    <div class="flex items-center justify-center w-full">
+                        <label for="fileInput" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition duration-200">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <i class="fas fa-file-csv text-3xl text-gray-400 mb-2"></i>
+                                <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                <p class="text-xs text-gray-500">CSV with 'review' column (MAX. 10MB)</p>
+                            </div>
+                            <input id="fileInput" type="file" class="hidden" accept=".csv" />
+                        </label>
+                    </div>
+                    <button id="uploadBtn" class="mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                        <i class="fas fa-upload mr-2"></i> Process CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden bg-white rounded-xl shadow-md p-6 mb-8 fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Analysis Results</h2>
+                <button id="copyBtn" class="text-sm text-blue-600 hover:text-blue-800 flex items-center">
+                    <i class="fas fa-copy mr-1"></i> Copy Results
+                </button>
+            </div>
+            
+            <!-- Single Review Results -->
+            <div id="singleReviewResults" class="hidden">
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Original Review</h3>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200" id="originalReviewText"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Features -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Extracted Features</h3>
+                        <div class="flex flex-wrap gap-2" id="featuresContainer"></div>
+                    </div>
+                    
+                    <!-- Sentiments -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Sentiment Analysis</h3>
+                        <div class="space-y-3" id="sentimentsContainer"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Batch Results -->
+            <div id="batchResults" class="hidden">
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium text-gray-700 mb-3">Summary Statistics</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <p class="text-sm text-blue-600 font-medium">Total Reviews</p>
+                            <p class="text-2xl font-bold text-blue-800" id="totalReviews">0</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                            <p class="text-sm text-green-600 font-medium">Features Identified</p>
+                            <p class="text-2xl font-bold text-green-800" id="totalFeatures">0</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                            <p class="text-sm text-purple-600 font-medium">Avg. Features/Review</p>
+                            <p class="text-2xl font-bold text-purple-800" id="avgFeatures">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Top Features -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Most Discussed Features</h3>
+                        <div class="space-y-3" id="topFeaturesContainer"></div>
+                    </div>
+                    
+                    <!-- Sentiment Distribution -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Sentiment Distribution</h3>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <canvas id="sentimentChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed Results -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-3">Detailed Analysis</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Review</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Features</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sentiments</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="resultsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+            <div class="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full mx-4 text-center">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                <h3 class="text-lg font-medium text-gray-800 mb-2">Analyzing Reviews</h3>
+                <p class="text-gray-600" id="loadingText">Processing your request...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // DOM Elements
+        const reviewInput = document.getElementById('reviewInput');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const resultsSection = document.getElementById('resultsSection');
+        const singleReviewResults = document.getElementById('singleReviewResults');
+        const batchResults = document.getElementById('batchResults');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const loadingText = document.getElementById('loadingText');
+        
+        // Event Listeners
+        analyzeBtn.addEventListener('click', async () => {
+            if (!reviewInput.value.trim()) {
+                alert('Please enter a product review');
+                return;
+            }
+            
+            showLoading('Analyzing review...');
+            
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ review_text: reviewInput.value.trim() })
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to analyze review');
+                }
+                
+                const result = await response.json();
+                displaySingleReviewResult(result);
+            } catch (error) {
+                console.error('Error analyzing review:', error);
+                alert(error.message || 'An error occurred while analyzing the review');
+            } finally {
+                hideLoading();
+            }
+        });
+        
+        uploadBtn.addEventListener('click', async () => {
+            if (!fileInput.files.length) {
+                alert('Please select a CSV file');
+                return;
+            }
+            
+            showLoading('Processing CSV file...');
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                
+                const response = await fetch('/process_csv', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to process CSV');
+                }
+                
+                const results = await response.json();
+                displayBatchResults(results);
+            } catch (error) {
+                console.error('Error processing CSV:', error);
+                alert(error.message || 'An error occurred while processing the CSV file');
+            } finally {
+                hideLoading();
+            }
+        });
+        
+        // Display Functions
+        function displaySingleReviewResult(result) {
+            // Show original review
+            document.getElementById('originalReviewText').textContent = result.review;
+            
+            // Show features
+            const featuresContainer = document.getElementById('featuresContainer');
+            featuresContainer.innerHTML = '';
+            result.features.forEach(feature => {
+                const chip = document.createElement('div');
+                chip.className = 'feature-chip bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium';
+                chip.textContent = feature;
+                featuresContainer.appendChild(chip);
+            });
+            
+            // Show sentiments
+            const sentimentsContainer = document.getElementById('sentimentsContainer');
+            sentimentsContainer.innerHTML = '';
+            for (const [feature, sentiment] of Object.entries(result.sentiments)) {
+                const sentimentDiv = document.createElement('div');
+                sentimentDiv.className = 'flex items-center justify-between';
+                
+                const featureSpan = document.createElement('span');
+                featureSpan.className = 'font-medium text-gray-700';
+                featureSpan.textContent = feature;
+                
+                const sentimentSpan = document.createElement('span');
+                sentimentSpan.className = `sentiment-${sentiment} px-3 py-1 rounded-full text-sm font-medium capitalize`;
+                sentimentSpan.textContent = sentiment;
+                
+                sentimentDiv.appendChild(featureSpan);
+                sentimentDiv.appendChild(sentimentSpan);
+                sentimentsContainer.appendChild(sentimentDiv);
+            }
+            
+            // Show the appropriate sections
+            singleReviewResults.classList.remove('hidden');
+            batchResults.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+            
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function displayBatchResults(results) {
+            // Update summary stats
+            document.getElementById('totalReviews').textContent = results.analysis.summary.total_reviews;
+            document.getElementById('totalFeatures').textContent = results.analysis.summary.total_features_identified;
+            document.getElementById('avgFeatures').textContent = (results.analysis.summary.total_features_identified / results.analysis.summary.total_reviews).toFixed(1);
+            
+            // Show top features
+            const topFeaturesContainer = document.getElementById('topFeaturesContainer');
+            topFeaturesContainer.innerHTML = '';
+            results.analysis.top_features.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between';
+                
+                const featureSpan = document.createElement('span');
+                featureSpan.className = 'text-gray-700';
+                featureSpan.textContent = item.feature;
+                
+                const countSpan = document.createElement('span');
+                countSpan.className = 'font-medium text-gray-900';
+                countSpan.textContent = `${item.count} mention${item.count !== 1 ? 's' : ''}`;
+                
+                div.appendChild(featureSpan);
+                div.appendChild(countSpan);
+                topFeaturesContainer.appendChild(div);
+            });
+            
+            // Calculate sentiment distribution
+            const sentimentData = {
+                positive: 0,
+                negative: 0,
+                neutral: 0
+            };
+            
+            results.results.forEach(review => {
+                for (const sentiment of Object.values(review.sentiments)) {
+                    sentimentData[sentiment]++;
+                }
+            });
+            
+            // Render sentiment chart
+            renderSentimentChart(sentimentData);
+            
+            // Show detailed results
+            const tableBody = document.getElementById('resultsTableBody');
+            tableBody.innerHTML = '';
+            results.results.forEach(review => {
+                const row = document.createElement('tr');
+                
+                // Review cell
+                const reviewCell = document.createElement('td');
+                reviewCell.className = 'px-6 py-4 whitespace-normal text-sm text-gray-800';
+                reviewCell.textContent = review.review_text.length > 100 
+                    ? review.review_text.substring(0, 100) + '...' 
+                    : review.review_text;
+                row.appendChild(reviewCell);
+                
+                // Features cell
+                const featuresCell = document.createElement('td');
+                featuresCell.className = 'px-6 py-4 whitespace-normal';
+                const featuresDiv = document.createElement('div');
+                featuresDiv.className = 'flex flex-wrap gap-1';
+                review.features.forEach(feature => {
+                    const chip = document.createElement('span');
+                    chip.className = 'bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full text-xs';
+                    chip.textContent = feature;
+                    featuresDiv.appendChild(chip);
+                });
+                featuresCell.appendChild(featuresDiv);
+                row.appendChild(featuresCell);
+                
+                // Sentiments cell
+                const sentimentsCell = document.createElement('td');
+                sentimentsCell.className = 'px-6 py-4 whitespace-normal';
+                const sentimentsDiv = document.createElement('div');
+                sentimentsDiv.className = 'flex flex-wrap gap-1';
+                for (const [feature, sentiment] of Object.entries(review.sentiments)) {
+                    const chip = document.createElement('span');
+                    chip.className = `sentiment-${sentiment} px-2 py-0.5 rounded-full text-xs capitalize`;
+                    chip.textContent = `${feature}: ${sentiment}`;
+                    sentimentsDiv.appendChild(chip);
+                }
+                sentimentsCell.appendChild(sentimentsDiv);
+                row.appendChild(sentimentsCell);
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Show the appropriate sections
+            singleReviewResults.classList.add('hidden');
+            batchResults.classList.remove('hidden');
+            resultsSection.classList.remove('hidden');
+            
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function renderSentimentChart(data) {
+            const ctx = document.getElementById('sentimentChart').getContext('2d');
+            
+            if (window.sentimentChart) {
+                window.sentimentChart.destroy();
+            }
+            
+            window.sentimentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Positive', 'Negative', 'Neutral'],
+                    datasets: [{
+                        data: [data.positive, data.negative, data.neutral],
+                        backgroundColor: [
+                            '#10b981',
+                            '#ef4444',
+                            '#3b82f6'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+        
+        // Helper Functions
+        function showLoading(text) {
+            loadingText.textContent = text || 'Processing...';
+            loadingIndicator.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hideLoading() {
+            loadingIndicator.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        
+        // Initialize
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const resultsText = resultsSection.innerText;
+            navigator.clipboard.writeText(resultsText)
+                .then(() => alert('Results copied to clipboard!'))
+                .catch(err => console.error('Failed to copy:', err));
+        });
+    </script>
+</body>
+</html>
